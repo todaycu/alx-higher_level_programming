@@ -1,17 +1,15 @@
-t request = require('request');
-
-function callback (error, response, body) {
-	  if (!error && response.statusCode === 200) {
-		      const characters = JSON.parse(body).characters;
-		      for (const character of characters) {
-			            // console.log(character);
-			      //       request(character, function (error, response, body) {
-			      //               if (!error && response.statusCode === 200) {
-			      //                         const info = JSON.parse(body);
-			      //                                   console.log(info.name);
-			      //                                           }
-			      //                                                 });
-			      //                                                     }
-			      //                                                       }
-			      //                                                       }
-			      //                                                       request('https://swapi-api.hbtn.io/api/films/' + process.argv[2], callback);
+#!/usr/bin/node
+const request = require('request');
+const url = 'https://swapi-api.hbtn.io/api/films/' + process.argv[2];
+request(url, function (error, response, body) {
+  if (!error) {
+    const characters = JSON.parse(body).characters;
+    characters.forEach((character) => {
+      request(character, function (error, response, body) {
+        if (!error) {
+          console.log(JSON.parse(body).name);
+        }
+      });
+    });
+  }
+});
